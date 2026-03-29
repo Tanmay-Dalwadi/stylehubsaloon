@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R.FILMS | Ravi Thakkar - Visual Artist</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="R.FILMS - Premium Portfolio of Ravi Thakkar. Specialized in Director, Video Editing, VFX, and Cinematic Storytelling.">
+    <meta name="keywords" content="Video Editing, VFX Artist, Film Director, Ravi Thakkar, R.FILMS, Portfolio, Cinematic">
+
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent: #e5e7eb;
+            --primary: #ff3c00;
+            --bg: #050505;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+            scroll-behavior: smooth;
+        }
+
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+
+        /* Page Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out, visibility 1s;
+        }
+
+        .loader-content { overflow: hidden; }
+        .loader-text {
+            display: block;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.5em;
+            transform: translateY(100%);
+            animation: slideUp 1s ease forwards;
+        }
+
+        @keyframes slideUp { to { transform: translateY(0); } }
+
+        /* Custom Cursor */
+        #cursor {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, background-color 0.3s ease;
+        }
+
+        #cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s ease-out;
+        }
+
+        /* Film Grain & Light Leak */
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Texture.png");
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .light-leak {
+            position: fixed;
+            top: -10%; right: -10%;
+            width: 50%; height: 50%;
+            background: radial-gradient(circle, rgba(255, 60, 0, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text Stroke Effect */
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+
+        /* Hero Image Parallax */
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(5,5,5,0.9) 30%, transparent), 
+                              url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            animation: slowZoom 20s infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* Image Frame Effect */
+        .image-frame { position: relative; display: inline-block; }
+        .image-frame::after {
+            content: '';
+            position: absolute;
+            top: 20px; right: -20px;
+            width: 100%; height: 100%;
+            border: 1px solid var(--primary);
+            z-index: -1;
+            transition: 0.5s;
+        }
+        .image-frame:hover::after { top: 0; right: 0; }
+
+        /* Video / Form Styling */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 4px;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        input, textarea {
+            background: transparent !important;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            color: white;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* Glow effects */
+        .glow:hover { box-shadow: 0 0 30px rgba(255, 60, 0, 0.2); }
+
+        @media (max-width: 768px) {
+            #cursor, #cursor-follower { display: none; }
+            body { cursor: auto; }
+            .hero-bg { background-image: linear-gradient(to top, rgba(5,5,5,1) 20%, transparent), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop'); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-content">
+            <span class="loader-text">R.FILMS</span>
+        </div>
+    </div>
+
+    <div class="grain"></div>
+    <div class="light-leak"></div>
+
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference">
+        <div class="font-sync text-2xl tracking-tighter">R.FILMS</div>
+        <div class="hidden md:flex space-x-12 text-[10px] uppercase tracking-[0.4em] font-light">
+            <a href="#work" class="hover:text-white transition-colors">Portfolio</a>
+            <a href="#reels" class="hover:text-white transition-colors">Reels</a>
+            <a href="#about" class="hover:text-white transition-colors">About</a>
+            <a href="#services" class="hover:text-white transition-colors">Services</a>
+            <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="h-screen relative flex items-center overflow-hidden">
+        <div class="absolute inset-0 hero-bg"></div>
+        <div class="container mx-auto px-8 relative z-10">
+            <div class="max-w-3xl space-y-6">
+                <p class="uppercase tracking-[0.8em] text-[10px] text-orange-500 reveal">Director & Visual Artist</p>
+                <h1 class="text-6xl md:text-8xl font-sync font-bold leading-tight reveal" style="transition-delay: 200ms;">
+                    RAVI <br> <span class="text-stroke">THAKKAR</span>
+                </h1>
+                <div class="flex items-center space-x-6 reveal" style="transition-delay: 400ms;">
+                    <a href="#reels" class="magnetic-btn px-10 py-4 bg-white text-black text-[10px] uppercase tracking-widest font-bold rounded-sm hover:bg-orange-600 hover:text-white transition-all">
+                        Watch Work
+                    </a>
+                    <div class="w-24 h-[1px] bg-white/30 hidden md:block"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-8 bg-[#050505] relative overflow-hidden border-b border-white/5">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <div class="image-frame">
+                        <!-- Professional Photo of Ravi Thakkar (Placeholder) -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" 
+                             alt="Ravi Thakkar - Visual Artist" 
+                             class="w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl">
+                    </div>
+                </div>
+
+                <div class="space-y-8 reveal" style="transition-delay: 200ms;">
+                    <h2 class="text-4xl md:text-6xl font-sync font-bold leading-tight">THE<br><span class="text-stroke">VISIONARY</span></h2>
+                    <div class="space-y-4">
+                        <p class="text-xl text-white font-medium">Ravi Thakkar — Director, Editor & VFX Artist</p>
+                        <p class="text-lg text-gray-400 leading-relaxed font-light">
+                            Based in Vadodara, I am a visual artist dedicated to pushing the boundaries of digital storytelling. With over 5 years of expertise in high-end VFX and rhythmic editing, I treat every project as a unique cinematic canvas.
+                        </p>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            My work blends technical precision with a soul-stirring narrative approach. From narrative short films to high-impact ad campaigns, my mission is to create visuals that linger long after the screen goes black.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 pt-4">
+                        <div>
+                            <span class="block text-2xl font-sync text-orange-500">20+</span>
+                            <span class="text-[9px] uppercase tracking-widest opacity-50">Global Projects</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-sync text-orange-500">3+</span>
+                            <span class="text-[9px] uppercase tracking-widest opacity-50">Years On Set</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-[#080808] border-b border-white/5">
+        <div class="container mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="reveal">
+                    <h3 class="text-4xl md:text-5xl font-sync text-orange-600 mb-2">20+</h3>
+                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-50">Projects Completed</p>
+                </div>
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <h3 class="text-4xl md:text-5xl font-sync text-orange-600 mb-2">3+</h3>
+                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-50">Years of Experience</p>
+                </div>
+                <div class="reveal" style="transition-delay: 400ms;">
+                    <h3 class="text-4xl md:text-5xl font-sync text-orange-600 mb-2">100%</h3>
+                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-50">Client Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reels Section (Featured Work) -->
+    <section id="reels" class="py-32 px-8 bg-[#0a0a0a]">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-20 reveal">
+                <h2 class="text-4xl font-sync font-bold">FEATURED WORKS</h2>
+                <a href="https://www.youtube.com/@RFilms" target="_blank" class="text-[10px] uppercase tracking-widest border-b border-orange-500 pb-1">Watch All</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="reveal">
+                    <div class="video-container mb-6 group glow">
+                        <iframe src="https://www.youtube.com/embed/-LO3uJ9v6v8?modestbranding=1&rel=0" allowfullscreen></iframe>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-sync text-sm tracking-widest uppercase">Cyberverse | Short Film</h4>
+                        <span class="text-[10px] opacity-40 uppercase">VFX & Direction</span>
+                    </div>
+                </div>
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <div class="video-container mb-6 group glow">
+                        <iframe src="https://www.youtube.com/embed/cbkDrPXTRII?modestbranding=1&rel=0" allowfullscreen></iframe>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-sync text-sm tracking-widest uppercase">Dead End | Short Film</h4>
+                        <span class="text-[10px] opacity-40 uppercase">Direction & Edit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 px-8 bg-[#050505] border-t border-white/5">
+        <div class="container mx-auto px-8">
+            <h2 class="text-4xl font-sync font-bold mb-16 reveal text-stroke">SERVICES</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
+                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">VIDEO EDITING</h4>
+                    <p class="text-sm opacity-50 font-light leading-relaxed">Precision cutting for narrative films and high-impact commercial projects.</p>
+                </div>
+                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
+                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">VFX & COMPOSITING</h4>
+                    <p class="text-sm opacity-50 font-light leading-relaxed">Advanced visual effects to create immersive digital environments.</p>
+                </div>
+                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
+                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">AD FILMS</h4>
+                    <p class="text-sm opacity-50 font-light leading-relaxed">Visual branding through professional advertising and corporate films.</p>
+                </div>
+                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
+                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">INSTAGRAM REELS</h4>
+                    <p class="text-sm opacity-50 font-light leading-relaxed">Fast-paced, high-quality short form content for modern digital reach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Still Gallery -->
+    <section id="work" class="py-32 px-8">
+        <div class="container mx-auto">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-5xl md:text-7xl font-sync font-bold text-stroke mb-4">GALLERY</h2>
+                <p class="text-xs tracking-[0.4em] uppercase opacity-40">Moments from the set</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="reveal aspect-[4/5] overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1493238792040-d710d73ba3a3?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="reveal aspect-[4/5] overflow-hidden group" style="transition-delay: 200ms;">
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="reveal aspect-[4/5] overflow-hidden group" style="transition-delay: 400ms;">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2168&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact Section -->
+    <footer id="contact" class="bg-white text-black py-24 px-8 relative z-10">
+        <div class="container mx-auto">
+            <!-- Footer Status Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-black/10 pb-12 mb-16 reveal">
+                <div class="flex items-center space-x-4">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-[10px] uppercase tracking-widest font-bold">Currently accepting new projects</span>
+                </div>
+                <div class="flex space-x-12 text-[10px] uppercase tracking-widest opacity-60 mt-6 md:mt-0">
+                    <div>
+                        <p class="mb-1">Local Time</p>
+                        <p id="local-time" class="font-bold text-black uppercase">00:00:00 AM</p>
+                    </div>
+                    <div>
+                        <p class="mb-1">Location</p>
+                        <p class="font-bold text-black uppercase">India</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+                <div class="lg:col-span-7 reveal">
+                    <h2 class="text-6xl md:text-8xl font-sync font-bold leading-none tracking-tighter mb-12">
+                        LET'S <br> <span class="text-orange-600">FILM.</span>
+                    </h2>
+                    
+                    <form class="space-y-6 max-w-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <input type="text" placeholder="NAME" class="p-4 text-xs tracking-widest uppercase border-black/10 text-black">
+                            <input type="email" placeholder="EMAIL" class="p-4 text-xs tracking-widest uppercase border-black/10 text-black">
+                        </div>
+                        <textarea rows="4" placeholder="PROJECT DETAILS" class="w-full p-4 text-xs tracking-widest uppercase border-black/10 text-black"></textarea>
+                        <button type="submit" class="magnetic-btn px-10 py-4 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-orange-600 transition-all">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="lg:col-span-5 flex flex-col justify-end space-y-12 reveal" style="transition-delay: 200ms;">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest opacity-40 font-bold mb-6">Quick Contact</p>
+                        <div class="space-y-4">
+                            <!-- Ravi Instagram Contact Button -->
+                            <a href="https://www.instagram.com/i.am.ravi.99" target="_blank" class="flex items-center space-x-4 p-4 border border-black/10 rounded-lg hover:bg-black hover:text-white transition-all group">
+                                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                <span class="text-xs uppercase tracking-widest font-bold">@i.am.ravi.99</span>
+                            </a>
+                            <!-- Ravi WhatsApp Contact Button -->
+                            <a href="https://wa.me/917284804201" target="_blank" class="flex items-center space-x-4 p-4 border border-black/10 rounded-lg hover:bg-green-600 hover:text-white hover:border-green-600 transition-all group">
+                                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.89-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.89-11.891 11.89-2.003 0-3.96-.499-5.705-1.447l-6.287 1.666zm6.314-4.736c1.554.922 3.256 1.409 5.011 1.409 5.398 0 9.791-4.393 9.791-9.791 0-2.616-1.019-5.075-2.87-6.927-1.85-1.85-4.312-2.87-6.921-2.87-5.398 0-9.791 4.394-9.791 9.791 0 1.834.512 3.62 1.48 5.176l-.988 3.608 3.699-.98zm11.233-6.195c-.297-.148-1.756-.867-2.028-.966-.272-.099-.47-.148-.668.148-.198.297-.766.966-.939 1.164-.173.198-.346.223-.643.074-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.521-.075-.148-.668-1.608-.915-2.203-.241-.58-.484-.5-.668-.509-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.756-.719 2.004-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                                <span class="text-xs uppercase tracking-widest font-bold">Chat with Ravi</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest opacity-40 font-bold mb-4">Connect</p>
+                            <div class="flex flex-col space-y-2 text-xs uppercase tracking-widest font-bold">
+                                <a href="https://www.instagram.com/i.am.ravi.99" target="_blank" class="hover:text-orange-600 transition-all magnetic-btn inline-block">Instagram</a>
+                                <a href="#" class="hover:text-orange-600 transition-all magnetic-btn inline-block">Vimeo</a>
+                                <a href="#" class="hover:text-orange-600 transition-all magnetic-btn inline-block">LinkedIn</a>
+                            </div>
+                        </div>
+                        <div class="flex justify-end items-end">
+                            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="magnetic-btn w-12 h-12 border border-black/10 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all">
+                                ↑
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center text-[9px] uppercase tracking-[0.3em] opacity-40 reveal">
+                <div class="flex flex-col md:flex-row md:space-x-8 text-center md:text-left">
+                    <p>© 2026 R.FILMS STUDIO — ALL RIGHTS RESERVED.</p>
+                    <!-- Developer Link to Tanmay Dalwadi -->
+                    <a href="https://www.instagram.com/tanmay_dalwadi" target="_blank" class="mt-2 md:mt-0 font-bold text-black opacity-100 uppercase tracking-widest hover:text-orange-600 transition-colors">CREATED BY TANMAY DALWADI</a>
+                </div>
+                <div class="flex space-x-6 mt-6 md:mt-0">
+                    <a href="#" class="hover:text-black transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-black transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page Loader Logic
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                document.querySelectorAll('.h-screen .reveal').forEach(el => el.classList.add('active'));
+            }, 1200);
+        });
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            follower.style.transform = `translate3d(${e.clientX - 15}px, ${e.clientY - 15}px, 0)`;
+        });
+
+        // Hover Effect for Cursor
+        const interactables = document.querySelectorAll('a, button, iframe, img, .group, input, textarea');
+        interactables.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                follower.style.transform += ' scale(2.5)';
+                follower.style.backgroundColor = 'rgba(255, 60, 0, 0.15)';
+                follower.style.borderColor = '#ff3c00';
+                cursor.style.backgroundColor = '#ff3c00';
+            });
+            item.addEventListener('mouseleave', () => {
+                follower.style.transform = follower.style.transform.replace(' scale(2.5)', '');
+                follower.style.backgroundColor = 'transparent';
+                follower.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                cursor.style.backgroundColor = 'white';
+            });
+        });
+
+        // Magnetic Button Effect
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const position = btn.getBoundingClientRect();
+                const x = e.pageX - position.left - position.width / 2 - window.scrollX;
+                const y = e.pageY - position.top - position.height / 2 - window.scrollY;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
+            });
+            btn.addEventListener('mouseout', function() {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Local Time Function
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            const clockEl = document.getElementById('local-time');
+            if(clockEl) clockEl.textContent = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
