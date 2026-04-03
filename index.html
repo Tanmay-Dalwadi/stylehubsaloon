@@ -1,524 +1,355 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R.FILMS | Ravi Thakkar - Visual Artist</title>
+    <title>StyleHub | Premium Men's Salon</title>
     
-    <!-- SEO -->
-    <meta name="description" content="R.FILMS - Premium Portfolio of Ravi Thakkar. Specialized in Director, Video Editing, VFX, and Cinematic Storytelling.">
-    <meta name="keywords" content="Video Editing, VFX Artist, Film Director, Ravi Thakkar, R.FILMS, Portfolio, Cinematic">
-
-    <!-- External Dependencies -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --accent: #e5e7eb;
-            --primary: #ff3c00;
-            --bg: #050505;
+            --gold: #eab308; /* yellow-500 */
         }
-
         body {
-            background-color: var(--bg);
-            color: var(--accent);
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            cursor: none;
-            scroll-behavior: smooth;
+            background-color: #050505;
+            color: #e2e8f0;
         }
-
-        .font-sync { font-family: 'Syncopate', sans-serif; }
-
-        /* Page Loader */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease-in-out, visibility 1s;
+        .font-luxury {
+            font-family: 'Cinzel', serif;
         }
-
-        .loader-content { overflow: hidden; }
-        .loader-text {
-            display: block;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 0.5em;
-            transform: translateY(100%);
-            animation: slideUp 1s ease forwards;
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        @keyframes slideUp { to { transform: translateY(0); } }
-
-        /* Custom Cursor */
-        #cursor {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease, background-color 0.3s ease;
+        .hero-glow {
+            background: radial-gradient(circle at center, rgba(234, 179, 8, 0.1) 0%, transparent 70%);
         }
-
-        #cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.2s ease-out;
+        .pricing-line {
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+            flex-grow: 1;
+            margin: 0 10px;
+            margin-bottom: 5px;
         }
-
-        /* Film Grain & Light Leak */
-        .grain {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Texture.png");
-            opacity: 0.04;
-            pointer-events: none;
-            z-index: 10000;
+        .card-hover:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px -10px rgba(234, 179, 8, 0.2);
         }
-
-        .light-leak {
-            position: fixed;
-            top: -10%; right: -10%;
-            width: 50%; height: 50%;
-            background: radial-gradient(circle, rgba(255, 60, 0, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Reveal Animation */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Text Stroke Effect */
-        .text-stroke {
-            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
-            color: transparent;
-        }
-
-        /* Hero Image Parallax */
-        .hero-bg {
-            background-image: linear-gradient(to right, rgba(5,5,5,0.9) 30%, transparent), 
-                              url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            animation: slowZoom 20s infinite alternate;
-        }
-
-        @keyframes slowZoom {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
-        /* Image Frame Effect */
-        .image-frame { position: relative; display: inline-block; }
-        .image-frame::after {
-            content: '';
-            position: absolute;
-            top: 20px; right: -20px;
-            width: 100%; height: 100%;
-            border: 1px solid var(--primary);
-            z-index: -1;
-            transition: 0.5s;
-        }
-        .image-frame:hover::after { top: 0; right: 0; }
-
-        /* Video / Form Styling */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 4px;
-            background: #000;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-        }
-
-        input, textarea {
-            background: transparent !important;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            color: white;
-        }
-        input:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        /* Glow effects */
-        .glow:hover { box-shadow: 0 0 30px rgba(255, 60, 0, 0.2); }
-
-        @media (max-width: 768px) {
-            #cursor, #cursor-follower { display: none; }
-            body { cursor: auto; }
-            .hero-bg { background-image: linear-gradient(to top, rgba(5,5,5,1) 20%, transparent), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop'); }
+        /* Mobile adjustment for horizontal scrolling on gallery */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- Loader -->
-    <div id="loader">
-        <div class="loader-content">
-            <span class="loader-text">R.FILMS</span>
-        </div>
-    </div>
+    <!-- NAV BAR -->
+    <nav class="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center transition-transform group-hover:rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/><path d="M7 12h.01"/><path d="M17 12h.01"/><path d="M12 7v.01"/><path d="M12 17v.01"/></svg>
+                </div>
+                <span class="text-xl font-luxury font-bold tracking-tighter text-white">STYLEHUB</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 text-[10px] uppercase tracking-[0.3em] font-semibold text-slate-400">
+                <a href="#services" class="hover:text-yellow-500 transition-colors">Services</a>
+                <a href="#pricing" class="hover:text-yellow-500 transition-colors">Pricing</a>
+                <a href="#gallery" class="hover:text-yellow-500 transition-colors">Gallery</a>
+                <a href="#contact" class="bg-yellow-500 text-black px-5 py-2 rounded shadow-lg shadow-yellow-500/20 hover:scale-105 transition-all">Book Now</a>
+            </div>
 
-    <div class="grain"></div>
-    <div class="light-leak"></div>
-
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
-
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference">
-        <div class="font-sync text-2xl tracking-tighter">R.FILMS</div>
-        <div class="hidden md:flex space-x-12 text-[10px] uppercase tracking-[0.4em] font-light">
-            <a href="#work" class="hover:text-white transition-colors">Portfolio</a>
-            <a href="#reels" class="hover:text-white transition-colors">Reels</a>
-            <a href="#about" class="hover:text-white transition-colors">About</a>
-            <a href="#services" class="hover:text-white transition-colors">Services</a>
-            <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            <!-- Mobile Menu Icon (Visual only) -->
+            <div class="md:hidden text-yellow-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="h-screen relative flex items-center overflow-hidden">
-        <div class="absolute inset-0 hero-bg"></div>
-        <div class="container mx-auto px-8 relative z-10">
-            <div class="max-w-3xl space-y-6">
-                <p class="uppercase tracking-[0.8em] text-[10px] text-orange-500 reveal">Director & Visual Artist</p>
-                <h1 class="text-6xl md:text-8xl font-sync font-bold leading-tight reveal" style="transition-delay: 200ms;">
-                    RAVI <br> <span class="text-stroke">THAKKAR</span>
-                </h1>
-                <div class="flex items-center space-x-6 reveal" style="transition-delay: 400ms;">
-                    <a href="#reels" class="magnetic-btn px-10 py-4 bg-white text-black text-[10px] uppercase tracking-widest font-bold rounded-sm hover:bg-orange-600 hover:text-white transition-all">
-                        Watch Work
-                    </a>
-                    <div class="w-24 h-[1px] bg-white/30 hidden md:block"></div>
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
+        <div class="absolute inset-0 hero-glow"></div>
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-yellow-500/10 blur-[120px] rounded-full"></div>
+        
+        <div class="relative z-10 max-w-4xl text-center">
+            <h2 class="text-xs uppercase tracking-[0.5em] text-yellow-500 font-bold mb-6 animate-pulse">Luxury Men's Grooming</h2>
+            <h1 class="text-5xl md:text-8xl font-luxury text-white mb-8 leading-tight">
+                Crafting Your <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-500 to-yellow-200">Signature Look</span>
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                Experience the art of barbering where traditional techniques meet contemporary style. Based in India, serving with excellence.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#contact" class="w-full sm:w-auto px-10 py-4 bg-yellow-500 text-black font-bold rounded-full transition-all hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] hover:-translate-y-1">
+                    Secure Your Slot
+                </a>
+                <a href="https://wa.me/919106312477" target="_blank" class="w-full sm:w-auto px-10 py-4 glass border-white/10 text-white font-bold rounded-full transition-all hover:bg-white/5">
+                    WhatsApp Chat
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (BENTO STYLE) -->
+    <section id="services" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="mb-16 text-center md:text-left">
+            <h3 class="text-yellow-500 font-bold text-sm tracking-[0.3em] uppercase mb-2">Our Expertise</h3>
+            <h2 class="text-4xl font-luxury text-white">Premier Services</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 glass p-8 rounded-3xl card-hover transition-all flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 bg-yellow-500/10 text-yellow-500 rounded-xl flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758L6.242 12m0 0L9.121 9.121M3 3h3.586a1 1 0 01.707.293L12 8.586l5.707-5.707a1 1 0 011.414 0L21 4.586a1 1 0 010 1.414L15.414 11.586l5.293 5.293a1 1 0 010 1.414L19.293 19.707a1 1 0 01-1.414 0L12 14.414l-5.707 5.707a1 1 0 01-1.414 0L3.414 18.707a1 1 0 010-1.414L8.707 12 3 6.293A1 1 0 013 4.879L4.414 3.464a1 1 0 011.415 0L12 9.586" /></svg>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">The Master Haircut</h4>
+                    <p class="text-slate-400">Not just a cut, but a transformation. Our stylists analyze your face shape and hair growth to deliver a custom look that lasts.</p>
+                </div>
+                <div class="mt-8 flex gap-2">
+                    <span class="text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-full">Scissor Cut</span>
+                    <span class="text-xs bg-white/5 border border-white/10 px-3 py-1 rounded-full">Fade Expert</span>
+                </div>
+            </div>
+
+            <div class="glass p-8 rounded-3xl card-hover transition-all">
+                <div class="w-12 h-12 bg-yellow-500/10 text-yellow-500 rounded-xl flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-4">Beard Sculpting</h4>
+                <p class="text-slate-400 mb-6">Precision trimming and hot towel treatment for a sharp, clean beard line.</p>
+                <ul class="text-sm text-yellow-500/70 space-y-2">
+                    <li>+ Beard Oil Application</li>
+                    <li>+ Hot Towel Finish</li>
+                </ul>
+            </div>
+
+            <div class="glass p-8 rounded-3xl card-hover transition-all">
+                <div class="w-12 h-12 bg-yellow-500/10 text-yellow-500 rounded-xl flex items-center justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-4">Relaxing Head Massage</h4>
+                <p class="text-slate-400">Rejuvenate your senses with our signature oil massage. Perfect for stress relief.</p>
+            </div>
+
+            <div class="md:col-span-2 glass p-8 rounded-3xl card-hover transition-all flex flex-col md:flex-row gap-8 items-center">
+                <div class="flex-1">
+                    <h4 class="text-2xl font-bold text-white mb-4">Skin Revitalization</h4>
+                    <p class="text-slate-400">From charcoal scrubs to gold facials, we ensure your skin glows as much as your hair. Deep pore cleansing and anti-tan treatments available.</p>
+                </div>
+                <div class="w-full md:w-48 aspect-video md:aspect-square bg-yellow-500/20 rounded-2xl flex items-center justify-center text-yellow-500 font-bold">
+                    PREMIUM CARE
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-32 px-8 bg-[#050505] relative overflow-hidden border-b border-white/5">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                <div class="reveal">
-                    <div class="image-frame">
-                        <!-- Professional Photo of Ravi Thakkar (Placeholder) -->
-                        <img src="1.jpeg" 
-                             alt="Ravi Thakkar - Visual Artist" 
-                             class="w-full max-w-md grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl">
-                    </div>
-                </div>
-
-                <div class="space-y-8 reveal" style="transition-delay: 200ms;">
-                    <h2 class="text-4xl md:text-6xl font-sync font-bold leading-tight">THE<br><span class="text-stroke">VISIONARY</span></h2>
-                    <div class="space-y-4">
-                        <p class="text-xl text-white font-medium">Ravi Thakkar — Director, Editor & VFX Artist</p>
-                        <p class="text-lg text-gray-400 leading-relaxed font-light">
-                            Based in Vadodara, I am a visual artist dedicated to pushing the boundaries of digital storytelling. With over 5 years of expertise in high-end VFX and rhythmic editing, I treat every project as a unique cinematic canvas.
-                        </p>
-                        <p class="text-gray-500 text-sm leading-relaxed">
-                            My work blends technical precision with a soul-stirring narrative approach. From narrative short films to high-impact ad campaigns, my mission is to create visuals that linger long after the screen goes black.
-                        </p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-8 pt-4">
-                        <div>
-                            <span class="block text-2xl font-sync text-orange-500">20+</span>
-                            <span class="text-[9px] uppercase tracking-widest opacity-50">Global Projects</span>
-                        </div>
-                        <div>
-                            <span class="block text-2xl font-sync text-orange-500">3+</span>
-                            <span class="text-[9px] uppercase tracking-widest opacity-50">Years On Set</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-20 bg-[#080808] border-b border-white/5">
-        <div class="container mx-auto px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                <div class="reveal">
-                    <h3 class="text-4xl md:text-5xl font-sync text-orange-600 mb-2">20+</h3>
-                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-50">Projects Completed</p>
-                </div>
-                <div class="reveal" style="transition-delay: 200ms;">
-                    <h3 class="text-4xl md:text-5xl font-sync text-orange-600 mb-2">3+</h3>
-                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-50">Years of Experience</p>
-                </div>
-                <div class="reveal" style="transition-delay: 400ms;">
-                    <h3 class="text-4xl md:text-5xl font-sync text-orange-600 mb-2">100%</h3>
-                    <p class="text-[10px] uppercase tracking-[0.3em] opacity-50">Client Satisfaction</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Reels Section (Featured Work) -->
-    <section id="reels" class="py-32 px-8 bg-[#0a0a0a]">
-        <div class="container mx-auto">
-            <div class="flex justify-between items-center mb-20 reveal">
-                <h2 class="text-4xl font-sync font-bold">FEATURED WORKS</h2>
-                <a href="https://www.youtube.com/@RFilms" target="_blank" class="text-[10px] uppercase tracking-widest border-b border-orange-500 pb-1">Watch All</a>
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="py-24 bg-black/50 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h3 class="text-yellow-500 font-bold text-sm tracking-[0.3em] uppercase mb-2">Investment</h3>
+                <h2 class="text-4xl font-luxury text-white">Pricing Menu</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="reveal">
-                    <div class="video-container mb-6 group glow">
-                        <iframe src="https://www.youtube.com/embed/-LO3uJ9v6v8?modestbranding=1&rel=0" allowfullscreen></iframe>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-sync text-sm tracking-widest uppercase">Cyberverse | Short Film</h4>
-                        <span class="text-[10px] opacity-40 uppercase">VFX & Direction</span>
-                    </div>
-                </div>
-                <div class="reveal" style="transition-delay: 200ms;">
-                    <div class="video-container mb-6 group glow">
-                        <iframe src="https://www.youtube.com/embed/cbkDrPXTRII?modestbranding=1&rel=0" allowfullscreen></iframe>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-sync text-sm tracking-widest uppercase">Dead End | Short Film</h4>
-                        <span class="text-[10px] opacity-40 uppercase">Direction & Edit</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="py-32 px-8 bg-[#050505] border-t border-white/5">
-        <div class="container mx-auto px-8">
-            <h2 class="text-4xl font-sync font-bold mb-16 reveal text-stroke">SERVICES</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
-                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
-                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">VIDEO EDITING</h4>
-                    <p class="text-sm opacity-50 font-light leading-relaxed">Precision cutting for narrative films and high-impact commercial projects.</p>
-                </div>
-                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
-                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">VFX & COMPOSITING</h4>
-                    <p class="text-sm opacity-50 font-light leading-relaxed">Advanced visual effects to create immersive digital environments.</p>
-                </div>
-                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
-                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">AD FILMS</h4>
-                    <p class="text-sm opacity-50 font-light leading-relaxed">Visual branding through professional advertising and corporate films.</p>
-                </div>
-                <div class="p-8 border border-white/10 glow group hover:border-orange-600 transition-all duration-500">
-                    <h4 class="text-orange-500 font-sync text-sm mb-4 tracking-widest">INSTAGRAM REELS</h4>
-                    <p class="text-sm opacity-50 font-light leading-relaxed">Fast-paced, high-quality short form content for modern digital reach.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Still Gallery -->
-    <section id="work" class="py-32 px-8">
-        <div class="container mx-auto">
-            <div class="text-center mb-20 reveal">
-                <h2 class="text-5xl md:text-7xl font-sync font-bold text-stroke mb-4">GALLERY</h2>
-                <p class="text-xs tracking-[0.4em] uppercase opacity-40">Moments from the set</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="reveal aspect-[4/5] overflow-hidden group">
-                    <img src="https://images.unsplash.com/photo-1493238792040-d710d73ba3a3?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                </div>
-                <div class="reveal aspect-[4/5] overflow-hidden group" style="transition-delay: 200ms;">
-                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                </div>
-                <div class="reveal aspect-[4/5] overflow-hidden group" style="transition-delay: 400ms;">
-                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2168&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer / Contact Section -->
-    <footer id="contact" class="bg-white text-black py-24 px-8 relative z-10">
-        <div class="container mx-auto">
-            <!-- Footer Status Bar -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-black/10 pb-12 mb-16 reveal">
-                <div class="flex items-center space-x-4">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-[10px] uppercase tracking-widest font-bold">Currently accepting new projects</span>
-                </div>
-                <div class="flex space-x-12 text-[10px] uppercase tracking-widest opacity-60 mt-6 md:mt-0">
-                    <div>
-                        <p class="mb-1">Local Time</p>
-                        <p id="local-time" class="font-bold text-black uppercase">00:00:00 AM</p>
-                    </div>
-                    <div>
-                        <p class="mb-1">Location</p>
-                        <p class="font-bold text-black uppercase">India</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact Content -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
-                <div class="lg:col-span-7 reveal">
-                    <h2 class="text-6xl md:text-8xl font-sync font-bold leading-none tracking-tighter mb-12">
-                        LET'S <br> <span class="text-orange-600">FILM.</span>
-                    </h2>
-                    
-                    <form class="space-y-6 max-w-lg">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <input type="text" placeholder="NAME" class="p-4 text-xs tracking-widest uppercase border-black/10 text-black">
-                            <input type="email" placeholder="EMAIL" class="p-4 text-xs tracking-widest uppercase border-black/10 text-black">
-                        </div>
-                        <textarea rows="4" placeholder="PROJECT DETAILS" class="w-full p-4 text-xs tracking-widest uppercase border-black/10 text-black"></textarea>
-                        <button type="submit" class="magnetic-btn px-10 py-4 bg-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-orange-600 transition-all">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-                
-                <div class="lg:col-span-5 flex flex-col justify-end space-y-12 reveal" style="transition-delay: 200ms;">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest opacity-40 font-bold mb-6">Quick Contact</p>
-                        <div class="space-y-4">
-                            <!-- Ravi Instagram Contact Button -->
-                            <a href="https://www.instagram.com/i.am.ravi.99" target="_blank" class="flex items-center space-x-4 p-4 border border-black/10 rounded-lg hover:bg-black hover:text-white transition-all group">
-                                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                                <span class="text-xs uppercase tracking-widest font-bold">@i.am.ravi.99</span>
-                            </a>
-                            <!-- Ravi WhatsApp Contact Button -->
-                            <a href="https://wa.me/917284804201" target="_blank" class="flex items-center space-x-4 p-4 border border-black/10 rounded-lg hover:bg-green-600 hover:text-white hover:border-green-600 transition-all group">
-                                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.89-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.89-11.891 11.89-2.003 0-3.96-.499-5.705-1.447l-6.287 1.666zm6.314-4.736c1.554.922 3.256 1.409 5.011 1.409 5.398 0 9.791-4.393 9.791-9.791 0-2.616-1.019-5.075-2.87-6.927-1.85-1.85-4.312-2.87-6.921-2.87-5.398 0-9.791 4.394-9.791 9.791 0 1.834.512 3.62 1.48 5.176l-.988 3.608 3.699-.98zm11.233-6.195c-.297-.148-1.756-.867-2.028-.966-.272-.099-.47-.148-.668.148-.198.297-.766.966-.939 1.164-.173.198-.346.223-.643.074-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.521-.075-.148-.668-1.608-.915-2.203-.241-.58-.484-.5-.668-.509-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.756-.719 2.004-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
-                                <span class="text-xs uppercase tracking-widest font-bold">Chat with Ravi</span>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-8">
-                        <div>
-                            <p class="text-[10px] uppercase tracking-widest opacity-40 font-bold mb-4">Connect</p>
-                            <div class="flex flex-col space-y-2 text-xs uppercase tracking-widest font-bold">
-                                <a href="https://www.instagram.com/i.am.ravi.99" target="_blank" class="hover:text-orange-600 transition-all magnetic-btn inline-block">Instagram</a>
-                                <a href="#" class="hover:text-orange-600 transition-all magnetic-btn inline-block">Vimeo</a>
-                                <a href="#" class="hover:text-orange-600 transition-all magnetic-btn inline-block">LinkedIn</a>
+            <div class="space-y-8">
+                <!-- Service Group -->
+                <div class="glass p-8 md:p-12 rounded-[2rem]">
+                    <div class="grid md:grid-cols-2 gap-x-16 gap-y-8">
+                        <!-- Column 1 -->
+                        <div class="space-y-6">
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Hair Cut</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹150</span>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Hair Wash</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹50</span>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Beard Styling</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹80</span>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Clean Shave</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹100</span>
                             </div>
                         </div>
-                        <div class="flex justify-end items-end">
-                            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="magnetic-btn w-12 h-12 border border-black/10 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all">
-                                ↑
-                            </button>
+                        <!-- Column 2 -->
+                        <div class="space-y-6">
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Head Massage</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹100</span>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Face Scrub</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹150</span>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">D-Tan Facial</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹400</span>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-white font-semibold">Hair Color</span>
+                                <div class="pricing-line"></div>
+                                <span class="text-yellow-500 font-bold">₹300+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Promo Card -->
+                    <div class="mt-12 p-6 bg-yellow-500 text-black rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="text-center md:text-left">
+                            <h4 class="font-bold text-lg">Signature Combo Deal</h4>
+                            <p class="text-sm font-medium opacity-80 italic">Haircut + Hair Wash + Beard Styling</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl font-black italic">₹250</span>
+                            <a href="https://wa.me/919106312477" class="bg-black text-white px-6 py-2 rounded-lg font-bold text-xs uppercase hover:scale-105 transition-transform">Book Deal</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Bottom Bar -->
-            <div class="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center text-[9px] uppercase tracking-[0.3em] opacity-40 reveal">
-                <div class="flex flex-col md:flex-row md:space-x-8 text-center md:text-left">
-                    <p>© 2026 R.FILMS STUDIO — ALL RIGHTS RESERVED.</p>
-                    <!-- Developer Link to Tanmay Dalwadi -->
-                    <a href="https://www.instagram.com/tanmay_dalwadi" target="_blank" class="mt-2 md:mt-0 font-bold text-black opacity-100 uppercase tracking-widest hover:text-orange-600 transition-colors">CREATED BY TANMAY DALWADI</a>
+    <!-- GALLERY -->
+    <section id="gallery" class="py-24 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div>
+                <h3 class="text-yellow-500 font-bold text-sm tracking-[0.3em] uppercase mb-2">Our Studio</h3>
+                <h2 class="text-4xl font-luxury text-white">Visual Experience</h2>
+            </div>
+            <p class="text-slate-500 text-sm max-w-sm">A clean, hygienic, and premium environment designed specifically for the modern man.</p>
+        </div>
+
+        <div class="flex gap-6 overflow-x-auto hide-scrollbar pb-10 snap-x">
+            <div class="min-w-[280px] md:min-w-[400px] aspect-[4/5] bg-slate-900 rounded-[2rem] overflow-hidden snap-center group">
+                <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Interior">
+            </div>
+            <div class="min-w-[280px] md:min-w-[400px] aspect-[4/5] bg-slate-900 rounded-[2rem] overflow-hidden snap-center group">
+                <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Tools">
+            </div>
+            <div class="min-w-[280px] md:min-w-[400px] aspect-[4/5] bg-slate-900 rounded-[2rem] overflow-hidden snap-center group">
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Style">
+            </div>
+            <div class="min-w-[280px] md:min-w-[400px] aspect-[4/5] bg-slate-900 rounded-[2rem] overflow-hidden snap-center group">
+                <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" alt="Experience">
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact" class="py-24 px-6">
+        <div class="max-w-2xl mx-auto glass p-8 md:p-12 rounded-[2.5rem] border-white/10 shadow-2xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-luxury text-white mb-4">Ready for a Change?</h2>
+                <p class="text-slate-400">Fill your details and our team will contact you for a confirmation.</p>
+            </div>
+
+            <form onsubmit="handleSubmit(event)" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" required placeholder="Your Name" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-yellow-500 focus:outline-none text-white transition-colors">
+                    <input type="tel" required placeholder="Phone Number" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-yellow-500 focus:outline-none text-white transition-colors">
                 </div>
-                <div class="flex space-x-6 mt-6 md:mt-0">
-                    <a href="#" class="hover:text-black transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-black transition-colors">Terms</a>
+                <select class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-yellow-500 focus:outline-none text-slate-400 appearance-none">
+                    <option>Select Primary Service</option>
+                    <option>Haircut (₹150)</option>
+                    <option>Beard Styling (₹80)</option>
+                    <option>Combo Deal (₹250)</option>
+                    <option>Luxury Facial (₹500)</option>
+                </select>
+                <button type="submit" class="w-full bg-yellow-500 text-black py-4 rounded-xl font-bold text-lg hover:shadow-[0_0_40px_rgba(234,179,8,0.3)] transition-all">
+                    Send Booking Request
+                </button>
+            </form>
+
+            <div id="success" class="hidden text-center py-10">
+                <div class="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Request Successful!</h3>
+                <p class="text-slate-500">Tanmay and the team will get back to you shortly.</p>
+                <button onclick="location.reload()" class="mt-6 text-yellow-500 font-bold uppercase text-xs tracking-widest underline">Book Another</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-20 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-luxury font-bold text-white mb-4">STYLE<span class="text-yellow-500">HUB</span></h1>
+                <p class="text-slate-500 text-sm max-w-xs mx-auto md:mx-0">Luxury grooming for the Indian gentleman. Redefining standards since 2024.</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <h6 class="text-xs uppercase tracking-[0.3em] font-bold text-slate-500 mb-6">Connect with us</h6>
+                <div class="flex gap-8">
+                    <a href="https://instagram.com/tanmay_dalwadi" target="_blank" class="group flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 glass rounded-full flex items-center justify-center transition-all group-hover:bg-yellow-500 group-hover:text-black">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </div>
+                        <span class="text-[10px] uppercase font-bold text-slate-400 group-hover:text-yellow-500">Instagram</span>
+                    </a>
+                    <a href="https://wa.me/919106312477" target="_blank" class="group flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 glass rounded-full flex items-center justify-center transition-all group-hover:bg-green-500 group-hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412 0 6.556-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.589.943 3.197 1.441 4.934 1.442 5.333 0 9.673-4.34 9.673-9.673s-4.338-9.673-9.671-9.673c-5.333 0-9.673 4.34-9.673 9.673 0 2.1.671 4.108 1.942 5.84l-.997 3.646 3.73-.979zm9.423-6.117c-.366-.183-2.17-1.071-2.505-1.193-.335-.122-.579-.183-.823.183-.244.366-.945 1.193-1.159 1.438-.214.244-.427.274-.792.091-.366-.183-1.543-.568-2.939-1.814-1.086-.968-1.82-2.164-2.033-2.531-.214-.366-.023-.564.159-.745.163-.163.366-.427.549-.641.183-.214.244-.366.366-.61.122-.244.061-.457-.03-.641-.091-.183-.823-1.983-1.128-2.716-.297-.714-.598-.617-.823-.629-.214-.012-.457-.012-.701-.012s-.641.091-.976.457c-.335.366-1.281 1.251-1.281 3.05s1.312 3.538 1.495 3.782c.183.244 2.581 3.941 6.252 5.525.873.376 1.554.601 2.083.771.878.278 1.677.239 2.308.145.703-.105 2.17-.885 2.475-1.739.305-.854.305-1.586.214-1.739-.091-.153-.335-.244-.701-.427z"/></svg>
+                        </div>
+                        <span class="text-[10px] uppercase font-bold text-slate-400 group-hover:text-green-500">WhatsApp</span>
+                    </a>
                 </div>
             </div>
+
+            <div class="text-center md:text-right">
+                <p class="text-slate-500 text-xs uppercase tracking-widest mb-2 font-bold italic">Design & Development</p>
+                <h5 class="text-white font-bold text-lg mb-1">Tanmay Dalwadi</h5>
+                <a href="https://instagram.com/tanmay_dalwadi" target="_blank" class="text-yellow-500 text-xs hover:underline">@tanmay_dalwadi</a>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-600 text-[10px] uppercase tracking-widest">
+            <p>© 2026 StyleHub Men's Salon. All rights reserved.</p>
+            <p>Created by Tanmay Dalwadi</p>
         </div>
     </footer>
 
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/919106312477" target="_blank"
+       class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-2xl shadow-2xl hover:scale-110 active:scale-90 transition-all z-[999]">
+       <div class="flex items-center gap-2">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412 0 6.556-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.589.943 3.197 1.441 4.934 1.442 5.333 0 9.673-4.34 9.673-9.673s-4.338-9.673-9.671-9.673c-5.333 0-9.673 4.34-9.673 9.673 0 2.1.671 4.108 1.942 5.84l-.997 3.646 3.73-.979zm9.423-6.117c-.366-.183-2.17-1.071-2.505-1.193-.335-.122-.579-.183-.823.183-.244.366-.945 1.193-1.159 1.438-.214.244-.427.274-.792.091-.366-.183-1.543-.568-2.939-1.814-1.086-.968-1.82-2.164-2.033-2.531-.214-.366-.023-.564.159-.745.163-.163.366-.427.549-.641.183-.214.244-.366.366-.61.122-.244.061-.457-.03-.641-.091-.183-.823-1.983-1.128-2.716-.297-.714-.598-.617-.823-.629-.214-.012-.457-.012-.701-.012s-.641.091-.976.457c-.335.366-1.281 1.251-1.281 3.05s1.312 3.538 1.495 3.782c.183.244 2.581 3.941 6.252 5.525.873.376 1.554.601 2.083.771.878.278 1.677.239 2.308.145.703-.105 2.17-.885 2.475-1.739.305-.854.305-1.586.214-1.739-.091-.153-.335-.244-.701-.427z"/></svg>
+           <span class="font-bold hidden sm:inline">Connect on WhatsApp</span>
+       </div>
+    </a>
+
     <script>
-        // Page Loader Logic
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                loader.style.visibility = 'hidden';
-                document.querySelectorAll('.h-screen .reveal').forEach(el => el.classList.add('active'));
-            }, 1200);
-        });
-
-        // Custom Cursor Logic
-        const cursor = document.getElementById('cursor');
-        const follower = document.getElementById('cursor-follower');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-            follower.style.transform = `translate3d(${e.clientX - 15}px, ${e.clientY - 15}px, 0)`;
-        });
-
-        // Hover Effect for Cursor
-        const interactables = document.querySelectorAll('a, button, iframe, img, .group, input, textarea');
-        interactables.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                follower.style.transform += ' scale(2.5)';
-                follower.style.backgroundColor = 'rgba(255, 60, 0, 0.15)';
-                follower.style.borderColor = '#ff3c00';
-                cursor.style.backgroundColor = '#ff3c00';
-            });
-            item.addEventListener('mouseleave', () => {
-                follower.style.transform = follower.style.transform.replace(' scale(2.5)', '');
-                follower.style.backgroundColor = 'transparent';
-                follower.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                cursor.style.backgroundColor = 'white';
-            });
-        });
-
-        // Magnetic Button Effect
-        const magneticBtns = document.querySelectorAll('.magnetic-btn');
-        magneticBtns.forEach(btn => {
-            btn.addEventListener('mousemove', function(e) {
-                const position = btn.getBoundingClientRect();
-                const x = e.pageX - position.left - position.width / 2 - window.scrollX;
-                const y = e.pageY - position.top - position.height / 2 - window.scrollY;
-                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
-            });
-            btn.addEventListener('mouseout', function() {
-                btn.style.transform = 'translate(0px, 0px)';
-            });
-        });
-
-        // Scroll Reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Local Time Function
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-            const clockEl = document.getElementById('local-time');
-            if(clockEl) clockEl.textContent = timeString;
+        function handleSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const success = document.getElementById('success');
+            
+            // Visual feedback
+            form.classList.add('hidden');
+            success.classList.remove('hidden');
         }
-        setInterval(updateTime, 1000);
-        updateTime();
     </script>
 </body>
 </html>
+
